@@ -1,0 +1,51 @@
+format = """
+[╭───]($symbol)$directory$character"""
+
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[✗](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+style = "bold green"
+
+[git_status]
+align = "left"
+conflicted = "⚡"
+ahead = "⇡"
+behind = "⇣"
+deleted = "✗"
+diverged = "⇕"
+stashed = "📦"
+untracked = "?"
+changed = "✎"
+deleted = "✗"
+renamed = "»"
+staged = "[+]"
+unstaged = "[*]"
+
+[cmd_duration]
+min_time = 500
+format = "took [$duration](bold yellow) "
+
+[package]
+symbol = "📦 "
+style = "208 bold"
+displayed = "top"
+
+[nodejs]
+symbol = " "
+detect_versions = ["20", "18"]
+
+[python]
+symbol = " "
+pyenv_version_name = true
+
+[rust]
+symbol = " "
