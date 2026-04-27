@@ -1,0 +1,9 @@
+# Neovide — https://neovide.dev/configuration.html
+# Symlinked to ~/.config/neovide/config.toml by scripts/restore.sh
+
+fork = false
+frame = "full"
+
+[font]
+normal = "JetBrainsMono Nerd Font"
+size = 14
