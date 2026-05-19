@@ -111,3 +111,8 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Added by CatPaw
 export PATH="$HOME/.catpawai/bin:$PATH"
+
+# Added by CatPaw
+export PATH="/Users/marketing/.catpawai/bin:$PATH"
+
+. "$HOME/.local/bin/env"
