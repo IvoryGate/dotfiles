@@ -1,0 +1,79 @@
+
+# docs: https://nikitabobko.github.io/AeroSpace/guide
+
+config-version = 2
+start-at-login = true
+
+after-startup-command = [
+    'exec-and-forget sh -c "~/.config/borders/bordersrc"',
+]
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# layout
+accordion-padding = 30
+default-root-container-layout = 'tiles'       # tiles | accordion
+default-root-container-orientation = 'auto'   # horizontal | vertical | auto
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+automatically-unhide-macos-hidden-apps = false
+persistent-workspaces = []
+
+on-mode-changed = []
+
+[key-mapping]
+    preset = 'qwerty'   # qwerty | dvorak | colemak
+
+[gaps]
+    inner.horizontal = 16
+    inner.vertical = 16
+    outer.left = 8
+    outer.bottom = 8
+    outer.top = 8
+    outer.right = 8
+
+[mode.main.binding]
+    alt-ctrl-shift-slash = 'layout tiles horizontal vertical'
+    alt-ctrl-shift-comma = 'layout accordion horizontal vertical'
+
+    cmd-alt-ctrl-shift-h = 'focus left'
+    cmd-alt-ctrl-shift-j = 'focus down'
+    cmd-alt-ctrl-shift-k = 'focus up'
+    cmd-alt-ctrl-shift-l = 'focus right'
+
+    alt-ctrl-shift-a = 'move left'
+    alt-ctrl-shift-s = 'move down'
+    alt-ctrl-shift-w = 'move up'
+    alt-ctrl-shift-d = 'move right'
+
+    alt-ctrl-shift-minus = 'resize smart -50'
+    alt-ctrl-shift-equal = 'resize smart +50'
+
+    alt-ctrl-shift-1 = 'workspace 1'
+    alt-ctrl-shift-2 = 'workspace 2'
+    alt-ctrl-shift-3 = 'workspace 3'
+    alt-ctrl-shift-4 = 'workspace 4'
+
+    alt-shift-1 = 'move-node-to-workspace 1'
+    alt-shift-2 = 'move-node-to-workspace 2'
+    alt-shift-3 = 'move-node-to-workspace 3'
+    alt-shift-4 = 'move-node-to-workspace 4'
+
+    alt-ctrl-shift-tab = 'workspace-back-and-forth'
+    cmd-alt-ctrl-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+    alt-ctrl-shift-semicolon = 'mode service'
+
+    alt-ctrl-shift-leftSquareBracket = 'focus dfs-prev --boundaries-action wrap-around-the-workspace'
+    alt-ctrl-shift-rightSquareBracket = 'focus dfs-next --boundaries-action wrap-around-the-workspace'
+
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main']
+    f = ['layout floating tiling', 'mode main']
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
