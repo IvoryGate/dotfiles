@@ -1,7 +1,0 @@
-# Optional: Mole (tw93) — requires current Xcode Command Line Tools on recent macOS.
-# If `brew bundle` here fails with "Command Line Tools are too outdated", update CLT first
-# (Software Update or `sudo xcode-select --install`), then re-run:
-#   brew bundle install --file=Brewfile.mole
-
-tap "tw93/tap"
-brew "tw93/tap/mole"

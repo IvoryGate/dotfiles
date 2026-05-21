@@ -1,0 +1,7 @@
+[user]
+	name = IvoryGate
+	email = j27370356952gmail.com
+[http]
+	proxy = 127.0.0.1:7890
+[https]
+	proxy = 127.0.0.1:7890

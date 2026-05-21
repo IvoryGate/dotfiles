@@ -1,25 +1,7 @@
+# macOS
 .DS_Store
 
-backup/
-
-tmux/plugins/
-
-fish/fish_variables
-fish/completions/
-fish/conf.d/
-fish/themes/
-fish/functions/_fzf_*.fish
-fish/functions/fisher.fish
-fish/functions/fzf_configure_bindings.fish
-
-mole/mole.log
-mole/operations.log
-
-karabiner/config/automatic_backups/
-karabiner/config/assets/
-
-vim/runtime/plugged/
-vim/runtime/undodir/
-vim/runtime/.netrwhist
-
-scripts/license.sh
+# fish
+fish/.config/fish/completions/
+fish/.config/fish/conf.d/
+fish/.config/fish/fish_variables
