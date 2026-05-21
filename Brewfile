@@ -8,3 +8,5 @@ brew "fish"
 brew "borders"
 
 cask "nikitabobko/tap/aerospace"
+
+cask "karabiner-elements"
