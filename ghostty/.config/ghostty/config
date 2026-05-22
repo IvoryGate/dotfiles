@@ -47,3 +47,11 @@ clipboard-read                 = allow
 clipboard-write                = allow
 clipboard-paste-protection     = true
 clipboard-trim-trailing-spaces = true
+
+# -------------------------------------------------- #
+# Split focus (Hyper = ctrl+alt+shift via Karabiner)
+# -------------------------------------------------- #
+keybind = performable:ctrl+alt+shift+h=goto_split:left
+keybind = performable:ctrl+alt+shift+j=goto_split:down
+keybind = performable:ctrl+alt+shift+k=goto_split:up
+keybind = performable:ctrl+alt+shift+l=goto_split:right
