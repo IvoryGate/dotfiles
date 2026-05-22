@@ -34,7 +34,7 @@
                         ]
                     },
                     {
-                        "description": "Hyper + H/J/K/L → Ctrl + Key (Terminal) / Arrow Keys (global)",
+                        "description": "Hyper + H/J/K/L → Arrow Keys",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -43,7 +43,9 @@
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm",
-                                            "^org\\.alacritty"
+                                            "^org\\.alacritty",
+                                            "^com\\.mitchellh\\.ghostty",
+                                            "^dev\\.warp\\.Warp-Stable"
                                         ]
                                     }
                                 ],
@@ -143,126 +145,6 @@
                                         "key_code": "right_arrow"
                                     }
                                 ]
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty",
-                                            "^dev\\.warp\\.Warp-Stable"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "h",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_shift"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "h",
-                                        "modifiers": [
-                                            "left_control"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty",
-                                            "^dev\\.warp\\.Warp-Stable"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "j",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_shift"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "j",
-                                        "modifiers": [
-                                            "left_control"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty",
-                                            "^dev\\.warp\\.Warp-Stable"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "k",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_shift"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "k",
-                                        "modifiers": [
-                                            "left_control"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty",
-                                            "^dev\\.warp\\.Warp-Stable"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "l",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_shift"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "l",
-                                        "modifiers": [
-                                            "left_control"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
                             },
                             {
                                 "from": {
