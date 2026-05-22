@@ -13,3 +13,9 @@ end
 # aliases
 alias ll="ls -ahlt"
 alias cdf='cd "$(dirname "$(find . -type f 2>/dev/null | fzf)")"'
+
+# starship prompt
+if status is-interactive; and command -q starship
+    set -gx STARSHIP_CONFIG "$HOME/.config/starship.toml"
+    starship init fish | source
+end
