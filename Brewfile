@@ -9,5 +9,6 @@ brew "yazi"
 brew "borders"
 brew "starship"
 
+cask "ghostty"
 cask "karabiner-elements"
 cask "nikitabobko/tap/aerospace"
