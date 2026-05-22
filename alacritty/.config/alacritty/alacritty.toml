@@ -1,0 +1,13 @@
+# Alacritty — https://alacritty.org/config-alacritty.html
+# Symlinked to ~/.config/alacritty/alacritty.toml by scripts/restore.sh
+
+[window]
+padding = { x = 4, y = 4 }
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+size = 14
+
+[colors.primary]
+background = "#1e1e2e"
+foreground = "#cdd6f4"

@@ -10,5 +10,6 @@ brew "borders"
 brew "starship"
 
 cask "ghostty"
+cask "alacritty"
 cask "karabiner-elements"
 cask "nikitabobko/tap/aerospace"
