@@ -7,7 +7,7 @@ brew "zsh"
 brew "fish"
 brew "yazi"
 brew "borders"
-
-cask "nikitabobko/tap/aerospace"
+brew "starship"
 
 cask "karabiner-elements"
+cask "nikitabobko/tap/aerospace"

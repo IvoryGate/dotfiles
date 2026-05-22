@@ -13,3 +13,6 @@ end
 # aliases
 alias ll="ls -ahlt"
 alias cdf='cd "$(dirname "$(find . -type f 2>/dev/null | fzf)")"'
+
+# starship prompt
+starship init fish | source

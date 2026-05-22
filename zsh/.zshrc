@@ -13,8 +13,8 @@ setopt HIST_IGNORE_DUPS
 autoload -Uz compinit
 compinit
 
-# prompt
-PROMPT='%F{blue}%~%f %# '
+# starship prompt
+eval "$(starship init zsh)"
 
 # aliases
 alias ll="ls -ahlt"
