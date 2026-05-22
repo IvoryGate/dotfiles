@@ -34,7 +34,7 @@
                         ]
                     },
                     {
-                        "description": "Hyper + H/J/K/L → Arrow Keys (not Ghostty: split focus in ghostty config)",
+                        "description": "Hyper + H/J/K/L → Arrow Keys",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -44,6 +44,7 @@
                                         "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm",
                                             "^org\\.alacritty",
+                                            "^com\\.mitchellh\\.ghostty",
                                             "^dev\\.warp\\.Warp-Stable"
                                         ]
                                     }
@@ -71,8 +72,7 @@
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm",
-                                            "^org\\.alacritty",
-                                            "^dev\\.warp\\.Warp-Stable"
+                                            "^org\\.alacritty"
                                         ]
                                     }
                                 ],
@@ -99,8 +99,7 @@
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm",
-                                            "^org\\.alacritty",
-                                            "^dev\\.warp\\.Warp-Stable"
+                                            "^org\\.alacritty"
                                         ]
                                     }
                                 ],
@@ -127,8 +126,7 @@
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
                                             "^com\\.github\\.wez\\.wezterm",
-                                            "^org\\.alacritty",
-                                            "^dev\\.warp\\.Warp-Stable"
+                                            "^org\\.alacritty"
                                         ]
                                     }
                                 ],
@@ -149,15 +147,6 @@
                                 ]
                             },
                             {
-                                "type": "basic",
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty"
-                                        ]
-                                    }
-                                ],
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": {
@@ -172,18 +161,10 @@
                                     {
                                         "key_code": "left_arrow"
                                     }
-                                ]
+                                ],
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty"
-                                        ]
-                                    }
-                                ],
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": {
@@ -198,18 +179,10 @@
                                     {
                                         "key_code": "down_arrow"
                                     }
-                                ]
+                                ],
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty"
-                                        ]
-                                    }
-                                ],
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": {
@@ -224,18 +197,10 @@
                                     {
                                         "key_code": "up_arrow"
                                     }
-                                ]
+                                ],
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty"
-                                        ]
-                                    }
-                                ],
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": {
@@ -250,7 +215,8 @@
                                     {
                                         "key_code": "right_arrow"
                                     }
-                                ]
+                                ],
+                                "type": "basic"
                             }
                         ]
                     },
