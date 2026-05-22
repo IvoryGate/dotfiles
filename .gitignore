@@ -9,3 +9,7 @@ fish/.config/fish/fish_variables
 # karabiner — local backups/assets from Elements UI
 karabiner/.config/karabiner/automatic_backups/
 karabiner/.config/karabiner/assets/
+
+# yazi — installed by `ya pkg install`
+yazi/.config/yazi/plugins/
+yazi/.config/yazi/flavors/
