@@ -180,6 +180,7 @@ keymap = [
 [spot]
 
 keymap = [
+	{ on = "q",     run = "close", desc = "Close the spot" },
 	{ on = "<Esc>", run = "close", desc = "Close the spot" },
 	{ on = "<C-[>", run = "close", desc = "Close the spot" },
 	{ on = "<C-c>", run = "close", desc = "Close the spot" },
