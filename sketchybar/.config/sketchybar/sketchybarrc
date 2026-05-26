@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Catppuccin Mocha bar + AeroSpace
+# Layout inspired by https://github.com/patricorgi/dotfiles
+
+source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/icons.sh"
+
+ITEM_DIR="$CONFIG_DIR/items"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+FONT="JetBrainsMono Nerd Font"
+PADDINGS=4
+
+# Hide macOS volume OSD overlay (patricorgi/dotfiles)
+launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /dev/null 2>&1 &
+
+bar=(
+	height=32
+	color=$BAR_COLOR
+	shadow=on
+	position=top
+	sticky=on
+	padding_right=10
+	padding_left=10
+	corner_radius=0
+	y_offset=0
+	margin=0
+	blur_radius=20
+)
+
+sketchybar --bar "${bar[@]}"
+
+defaults=(
+	updates=when_shown \
+	icon.font="$FONT:Bold:13.0" \
+	icon.color=$ICON_COLOR \
+	icon.padding_left=$PADDINGS \
+	icon.padding_right=$PADDINGS \
+	label.font="$FONT:Semibold:13.0" \
+	label.color=$LABEL_COLOR \
+	label.padding_left=$PADDINGS \
+	label.padding_right=$PADDINGS \
+	padding_right=$PADDINGS \
+	padding_left=$PADDINGS \
+	background.height=24 \
+	background.corner_radius=6 \
+	background.color=$BACKGROUND_1 \
+	background.border_width=1 \
+	background.border_color=$BACKGROUND_2
+)
+
+sketchybar --default "${defaults[@]}"
+
+# Left → center → right
+source "$ITEM_DIR/aerospace.sh"
+source "$ITEM_DIR/front_app.sh"
+source "$ITEM_DIR/media.sh"
+source "$ITEM_DIR/system.sh"
+source "$ITEM_DIR/right.sh"
+
+sketchybar --update
+
+echo "sketchybar configuration loaded"
