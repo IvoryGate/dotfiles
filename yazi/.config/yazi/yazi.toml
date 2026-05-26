@@ -33,8 +33,8 @@ edit = [
 	{ run = "code -w %s", desc = "code (block)", for = "windows", block = true },
 ]
 play = [
-	{ run = "xdg-open %s1", desc = "Play", for = "linux" },
-	{ run = "open %s", desc = "Play", for = "macos" },
+	{ run = "~/.config/yazi/mpv-play gui %s", desc = "Play (mpv window)", for = "macos", orphan = true },
+	{ run = "~/.config/yazi/mpv-play gui %s", desc = "Play (mpv window)", for = "linux", orphan = true },
 	{ run = 'start "" %s1', orphan = true, desc = "Play", for = "windows" },
 	{ run = "termux-open %s1", desc = "Play", for = "android" },
 	{ run = "mediainfo %s1; echo 'Press enter to exit'; read _", block = true, desc = "Show media info", for = "unix" },
