@@ -16,3 +16,6 @@ yazi/.config/yazi/flavors/
 # karabiner — local backups/assets from Elements UI
 karabiner/.config/karabiner/automatic_backups/
 karabiner/.config/karabiner/assets/
+
+# nvim — plugins installed by vim.pack (live in stdpath data)
+nvim/.config/nvim/nvim-pack-lock.json
