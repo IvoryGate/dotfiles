@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+osascript <<'EOF'
+tell application "System Events"
+	set frontApp to name of first application process whose frontmost is true
+	return frontApp
+end tell
+EOF
