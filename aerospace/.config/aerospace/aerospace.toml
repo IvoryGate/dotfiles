@@ -79,3 +79,8 @@ on-mode-changed = []
     alt-shift-j = ['join-with down', 'mode main']
     alt-shift-k = ['join-with up', 'mode main']
     alt-shift-l = ['join-with right', 'mode main']
+
+# Homebrew mpv reports app name "mpv" (no bundle id) — float or it tiles to ~0px.
+[[on-window-detected]]
+if.app-name-regex-substring = 'mpv'
+run = 'layout floating'
