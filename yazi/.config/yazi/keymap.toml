@@ -374,3 +374,8 @@ keymap = [
 on   = "l"
 run  = "plugin smart-enter"
 desc = "Enter the child directory, or open the file"
+
+[[mgr.prepend_keymap]]
+on   = "y"
+run  = ["yank", "plugin clippy"]
+desc = "Copy files to system clipboard"
