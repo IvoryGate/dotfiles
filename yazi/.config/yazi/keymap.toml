@@ -379,3 +379,13 @@ desc = "Enter the child directory, or open the file"
 on   = "y"
 run  = ["yank", "plugin clippy"]
 desc = "Copy files to system clipboard"
+
+[[mgr.prepend_keymap]]
+on   = "i"
+run  = "shell -- ~/.config/yazi/mpv-play gui %h"
+desc = "Play video (mpv)"
+
+[[mgr.prepend_keymap]]
+on   = "I"
+run  = "shell -- ~/.config/yazi/mpv-play preview %h"
+desc = "Play video (smaller mpv window)"
