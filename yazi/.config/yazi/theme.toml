@@ -1,2 +1,7 @@
 [flavor]
 dark = "catppuccin-mocha"
+
+[spot]
+title = { fg = "green" }
+tbl_col = { fg = "blue" }
+
