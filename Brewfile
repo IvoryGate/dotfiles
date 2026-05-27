@@ -1,5 +1,6 @@
 tap "FelixKratz/formulae"
 tap "nikitabobko/tap"
+tap "anomalyco/tap"
 
 brew "stow"
 brew "git"
@@ -19,6 +20,13 @@ brew "tree-sitter-cli"
 brew "imagemagick"
 brew "ghostscript"
 brew "pngpaste"
+
+# cli utilities
+brew "neofetch"
+brew "cmatrix"
+brew "btop"
+brew "dooit"
+brew "anomalyco/tap/opencode"
 
 cask "ghostty"
 cask "font-sketchybar-app-font"
