@@ -1,0 +1,2 @@
+# macOS entrypoint — Ghostty reads this before ~/.config/ghostty/config
+config-file = ../../../.config/ghostty/config
