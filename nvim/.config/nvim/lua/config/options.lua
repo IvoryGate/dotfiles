@@ -12,8 +12,14 @@ vim.opt.laststatus = 3
 vim.opt.showtabline = 2
 vim.opt.winborder = "rounded"
 vim.opt.mouse = "a"
-vim.opt.wrap = false
+-- Soft wrap at window edge (not hard wrap at 80 cols)
+vim.opt.wrap = true
 vim.opt.linebreak = true
+vim.opt.breakindent = true
+vim.opt.textwidth = 0
+vim.opt.wrapmargin = 0
+vim.opt.colorcolumn = ""
+vim.opt.formatoptions:remove("t")
 
 vim.opt.expandtab = true
 vim.opt.tabstop = 4

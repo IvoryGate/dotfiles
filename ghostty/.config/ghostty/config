@@ -20,9 +20,13 @@ font-size = 14
 # -------------------------------------------------- #
 # Custom
 # -------------------------------------------------- #
-theme = Mellow
-background-opacity      = 1
-background-blur         = 85
+theme = Catppuccin Mocha
+# Match sketchybar bar: mantle #181825 @ ~63% opacity + blur 20
+background                  = #181825
+background-opacity          = 0.63
+# Keep prompt powerline segments opaque — cell opacity breaks  color matching
+background-opacity-cells    = false
+background-blur             = 25
 mouse-hide-while-typing = true
 unfocused-split-opacity = 0.8
 window-padding-x        = 5

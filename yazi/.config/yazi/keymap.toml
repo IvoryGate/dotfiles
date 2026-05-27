@@ -180,6 +180,7 @@ keymap = [
 [spot]
 
 keymap = [
+	{ on = "q",     run = "close", desc = "Close the spot" },
 	{ on = "<Esc>", run = "close", desc = "Close the spot" },
 	{ on = "<C-[>", run = "close", desc = "Close the spot" },
 	{ on = "<C-c>", run = "close", desc = "Close the spot" },
@@ -374,3 +375,18 @@ keymap = [
 on   = "l"
 run  = "plugin smart-enter"
 desc = "Enter the child directory, or open the file"
+
+[[mgr.prepend_keymap]]
+on   = "y"
+run  = ["yank", "plugin clippy"]
+desc = "Copy files to system clipboard"
+
+[[mgr.prepend_keymap]]
+on   = "i"
+run  = "shell -- ~/.config/yazi/mpv-play gui %h"
+desc = "Play video (mpv)"
+
+[[mgr.prepend_keymap]]
+on   = "I"
+run  = "shell -- ~/.config/yazi/mpv-play preview %h"
+desc = "Play video (smaller mpv window)"

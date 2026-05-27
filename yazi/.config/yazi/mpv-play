@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:-gui}"
+shift || true
+
+if [ $# -eq 0 ]; then
+	echo "mpv-play: no file" >&2
+	exit 1
+fi
+
+for f in "$@"; do
+	if [ ! -f "$f" ]; then
+		echo "mpv-play: not a file: $f" >&2
+		exit 1
+	fi
+done
+
+MPV_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/mpv"
+
+mpv_common=(--config-dir="$MPV_CONFIG")
+if [ -n "${YAZI_ID:-}" ]; then
+	mpv_common+=(--script-opts="yazi-sync-yazi_id=${YAZI_ID}")
+fi
+
+case "$mode" in
+preview)
+	exec mpv "${mpv_common[@]}" --profile=preview "$@"
+	;;
+*)
+	exec mpv "${mpv_common[@]}" --profile=play "$@"
+	;;
+esac
