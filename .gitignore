@@ -17,6 +17,13 @@ yazi/.config/yazi/flavors/
 karabiner/.config/karabiner/automatic_backups/
 karabiner/.config/karabiner/assets/
 
+# opencode — npm install in ~/.config/opencode
+opencode/.config/opencode/node_modules/
+opencode/.config/opencode/package-lock.json
+
+# dooit — local todo database
+dooit/Library/Application Support/dooit/dooit.db
+
 # nvim — local logs and vim.pack lockfiles (plugins live in stdpath data)
 nvim.log
 nvim/nvim-pack-lock.json
