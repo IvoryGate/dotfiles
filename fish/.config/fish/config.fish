@@ -4,10 +4,16 @@ set -g fish_greeting ""
 # editor
 set -gx EDITOR "nvim"
 set -gx VISUAL "nvim"
+set -gx COLORTERM truecolor
 
 # homebrew
 if test -x /opt/homebrew/bin/brew
     /opt/homebrew/bin/brew shellenv | source
+end
+
+# user local bin (uv, etc.)
+if test -d "$HOME/.local/bin"
+    fish_add_path -P "$HOME/.local/bin"
 end
 
 # rust/cargo
