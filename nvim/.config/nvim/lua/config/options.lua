@@ -3,6 +3,8 @@ vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
 vim.opt.termguicolors = true
+vim.opt.pumblend = 15
+vim.opt.winblend = 15
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
