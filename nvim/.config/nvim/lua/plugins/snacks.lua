@@ -234,6 +234,70 @@ map("<leader>H", with_snacks(function(snacks)
   snacks.dashboard()
 end), "Home dashboard")
 
+map("<leader>fh", with_snacks(function(snacks)
+  snacks.picker.help({ layout = "dropdown" })
+end), "Help")
+
+map("<leader>fc", with_snacks(function(snacks)
+  snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+end), "Nvim config files")
+
+map("<leader>fs", with_snacks(function(snacks)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
+  for _, client in ipairs(clients) do
+    if client.server_capabilities.documentSymbolProvider then
+      snacks.picker.lsp_symbols({ layout = "dropdown", tree = true })
+      return
+    end
+  end
+  snacks.picker.treesitter()
+end), "Document symbols")
+
+map("<leader>fS", with_snacks(function(snacks)
+  snacks.picker.lsp_workspace_symbols()
+end), "Workspace symbols")
+
+map("grr", with_snacks(function(snacks)
+  snacks.picker.lsp_references({ include_declaration = false, include_current = true })
+end), "LSP references")
+
+map("<leader>fI", with_snacks(function(snacks)
+  snacks.picker.lsp_incoming_calls()
+end), "Incoming calls")
+
+map("<leader>fO", with_snacks(function(snacks)
+  snacks.picker.lsp_outgoing_calls({ tree = true })
+end), "Outgoing calls")
+
+map("<leader>fT", with_snacks(function(snacks)
+  snacks.picker.lsp_type_definitions()
+end), "Type definitions")
+
+map("<leader>fd", with_snacks(function(snacks)
+  snacks.picker.diagnostics_buffer()
+end), "Buffer diagnostics")
+
+map("<leader>fD", with_snacks(function(snacks)
+  snacks.picker.diagnostics()
+end), "Project diagnostics")
+
+map("<leader>fl", with_snacks(function(snacks)
+  snacks.picker.lines()
+end), "Lines in buffer")
+
+map("<leader>fj", with_snacks(function(snacks)
+  snacks.picker.jumps()
+end), "Jumps")
+
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.jump({ count = 1 })
+end, { desc = "Next diagnostic" })
+
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.jump({ count = -1 })
+end, { desc = "Previous diagnostic" })
+
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("SnacksMarkdown", { clear = true }),
   pattern = "markdown",

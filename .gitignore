@@ -21,8 +21,10 @@ karabiner/.config/karabiner/assets/
 opencode/.config/opencode/node_modules/
 opencode/.config/opencode/package-lock.json
 
-# dooit — local todo database
+# dooit — local todo database + python cache
 dooit/Library/Application Support/dooit/dooit.db
+dooit/**/__pycache__/
+dooit/**/*.pyc
 
 # nvim — local logs and vim.pack lockfiles (plugins live in stdpath data)
 nvim.log
