@@ -29,8 +29,12 @@ brew "btop"
 brew "dooit"
 brew "anomalyco/tap/opencode"
 
-cask "ghostty"
+# fonts — JetBrainsMono Nerd Font (ghostty, alacritty, sketchybar, mpv, starship)
+#          sketchybar-app-font (sketchybar app icons)
+cask "font-jetbrains-mono-nerd-font"
 cask "font-sketchybar-app-font"
+
+cask "ghostty"
 cask "alacritty"
 cask "karabiner-elements"
 cask "nikitabobko/tap/aerospace"

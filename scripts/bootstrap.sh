@@ -64,8 +64,9 @@ cat <<EOF
 Done.
 
 Next steps:
-  brew bundle --file=$DOTFILES_DIR/Brewfile
+  brew bundle --file=$DOTFILES_DIR/Brewfile   # installs fonts + apps
   sketchybar --reload   # if sketchybar is installed
+  # Ghostty: Cmd+Q and reopen after font install if icons look wrong
 
 To restore your previous configs:
   $SCRIPT_DIR/restore.sh
