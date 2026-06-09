@@ -3,20 +3,67 @@ local pack_opts = { load = true, confirm = false }
 local M = {}
 local configured = false
 local preview ---@type { win: snacks.win, buf: number, img: snacks.image.Placement }?
-local preview_fit ---@type snacks.image.Opts?
+--- Markdown buffers whose inline images were cleared for zoom (must restore on close).
+local zoom_hid_inline = {} ---@type table<number, boolean>
 
 local vault_path = vim.fn.expand(vim.env.OBSIDIAN_VAULT or "~/dotfiles")
 
-local function close_preview()
-  preview_fit = nil
+local function refresh_snacks_images(buf)
+  if not vim.api.nvim_buf_is_valid(buf) then
+    return
+  end
+  if vim.b[buf].snacks_image_attached then
+    vim.schedule(function()
+      vim.api.nvim_exec_autocmds("WinScrolled", { buffer = buf, modeline = false })
+    end)
+    return
+  end
+  require("snacks.image.doc").attach(buf)
+end
+
+--- Only clear placements; keep inline instance so we never double inline.new.
+local function hide_inline_images(buf)
+  if not vim.api.nvim_buf_is_valid(buf) then
+    return
+  end
+  require("snacks.image.placement").clean(buf)
+  zoom_hid_inline[buf] = true
+end
+
+local function restore_inline_images(buf)
+  if not vim.api.nvim_buf_is_valid(buf) then
+    return
+  end
+  zoom_hid_inline[buf] = nil
+  refresh_snacks_images(buf)
+end
+
+---@param opts? { skip_restore?: boolean }
+local function close_preview(opts)
+  opts = opts or {}
+  local md_buf = preview and preview.buf
+  local restore = not opts.skip_restore and md_buf and zoom_hid_inline[md_buf]
+
+  pcall(vim.api.nvim_clear_autocmds, { group = "MarkdownMediaPreview" })
+
   if preview then
-    preview.win:close()
     preview.img:close()
+    preview.win:close()
     preview = nil
   end
+
   pcall(function()
     require("snacks.image.doc").hover_close()
   end)
+
+  if restore and md_buf then
+    zoom_hid_inline[md_buf] = nil
+    vim.schedule(function()
+      vim.defer_fn(function()
+        restore_inline_images(md_buf)
+      end, 50)
+    end)
+  end
 end
 
 local function text_area(win)
@@ -24,48 +71,31 @@ local function text_area(win)
   local info = vim.fn.getwininfo(win)[1] or {}
   local textoff = info.textoff or 0
   return {
-    width = math.max(1, vim.api.nvim_win_get_width(win)),
-    col = 0,
+    width = math.max(1, vim.api.nvim_win_get_width(win) - textoff),
+    col = textoff,
     height = vim.api.nvim_win_get_height(win),
   }
 end
 
-local function patch_preview_fit()
-  local ok, util = pcall(require, "snacks.image.util")
-  if not ok or util._preview_fill then
+local function ensure_tmux_passthrough()
+  if not vim.env.TMUX then
     return
   end
-  util._preview_fill = true
-  local orig_fit = util.fit
-  function util.fit(file, cells, opts)
-    if not (preview_fit and preview_fit._preview) then
-      return orig_fit(file, cells, opts)
-    end
-    local target_w = preview_fit.max_width
-    local target_h = preview_fit.max_height or cells.height or 9999
-    local result = orig_fit(file, { width = target_w, height = target_h }, opts)
-    if result.width <= 0 then
-      return result
-    end
-    -- Width-first: always span the preview pane; height scales proportionally.
-    if result.width ~= target_w then
-      local scale = target_w / result.width
-      return util.norm({
-        width = target_w,
-        height = math.max(1, math.ceil(result.height * scale)),
-      })
-    end
-    return result
-  end
+  pcall(vim.fn.system, { "tmux", "set", "-p", "allow-passthrough", "all" })
 end
 
 function M.preview_at_cursor()
   require("plugins.snacks").load()
-  patch_preview_fit()
+  ensure_tmux_passthrough()
   local snacks = require("snacks")
   local doc = snacks.image.doc
   local buf = vim.api.nvim_get_current_buf()
-  local area = text_area()
+  local win = vim.api.nvim_get_current_win()
+  local area = text_area(win)
+  local border = 1
+  local pane_w = math.max(1, area.width - 2 * border)
+  local pane_col = area.col
+  local pane_h = math.max(12, math.min(area.height, math.floor(vim.o.lines * 0.65)))
 
   doc.at_cursor(function(src, pos)
     if not src then
@@ -73,57 +103,67 @@ function M.preview_at_cursor()
       return
     end
 
+    -- Toggle: same image under cursor closes the zoom preview.
     if preview and preview.buf == buf and preview.img.img.src == src then
-      preview.img:update()
+      close_preview()
       return
     end
 
-    close_preview()
+    -- Do not restore inline yet — we open another zoom right away.
+    close_preview({ skip_restore = true })
+
+    hide_inline_images(buf)
 
     local preview_row = math.max(0, (pos and pos[1] or vim.api.nvim_win_get_cursor(0)[1]) - 1)
-    local max_h = math.max(1, area.height - preview_row - 1)
-
+    local iw = pane_w
+    local ih = pane_h
     local float = Snacks.win(Snacks.win.resolve("snacks_image_preview", {
       show = false,
       enter = false,
       relative = "win",
-      width = area.width,
-      min_width = area.width,
-      max_width = area.width,
+      anchor = "NW",
       row = preview_row,
-      col = area.col,
+      col = pane_col,
+      width = iw,
+      height = ih,
+      min_width = iw,
+      max_width = iw,
+      min_height = 1,
+      max_height = ih,
       wo = { winblend = snacks.image.terminal.env().placeholders and 0 or nil },
     }))
     float:open_buf()
 
-    preview_fit = {
-      _preview = true,
-      width = area.width,
-      max_width = area.width,
-      max_height = max_h,
-    }
-
     local updated = false
     local opts = {
-      _preview = true,
-      width = area.width,
-      min_width = area.width,
-      max_width = area.width,
-      max_height = max_h,
       inline = false,
-      -- Must run before state(); hidden float has no wins and update() would bail early.
+      pos = { 1, 0 },
+      width = iw,
+      min_width = iw,
+      max_width = iw,
+      max_height = ih,
       on_update_pre = function(placement)
-        if not updated then
-          updated = true
-          local loc = placement:state().loc
-          float.opts.width = area.width
-          float.opts.min_width = area.width
-          float.opts.max_width = area.width
-          float.opts.height = loc.height
-          float.opts.col = area.col
-          float.opts.row = preview_row
-          float:show()
+        if updated then
+          return
         end
+        updated = true
+        local loc = placement:state().loc
+        local h = ih
+        if loc.width > 0 then
+          h = math.min(ih, math.max(1, math.ceil(loc.height * (iw / loc.width))))
+        end
+        float.opts.width = iw
+        float.opts.min_width = iw
+        float.opts.max_width = iw
+        float.opts.height = h
+        float.opts.min_height = h
+        float.opts.max_height = h
+        float.opts.row = preview_row
+        float.opts.col = pane_col
+        float:show()
+        vim.schedule(function()
+          placement:update()
+        end)
       end,
     }
 
@@ -133,15 +173,12 @@ function M.preview_at_cursor()
       img = snacks.image.placement.new(float.buf, src, opts),
     }
 
-    vim.api.nvim_create_autocmd({ "BufWritePost", "CursorMoved", "ModeChanged", "BufLeave", "VimResized" }, {
+    vim.api.nvim_create_autocmd({ "BufWritePost", "VimResized" }, {
       group = vim.api.nvim_create_augroup("MarkdownMediaPreview", { clear = true }),
+      buffer = buf,
       callback = function()
-        if not preview then
-          return true
-        end
-        M.preview_at_cursor()
-        if not preview then
-          return true
+        if preview then
+          M.preview_at_cursor()
         end
       end,
     })
@@ -153,8 +190,13 @@ function M.setup_buffer_maps(buf)
   local opts = { buffer = buf, silent = true }
 
   vim.keymap.set("n", "<leader>mh", M.preview_at_cursor, vim.tbl_extend("force", opts, {
-    desc = "Preview image or formula",
+    desc = "Zoom image/formula (toggle)",
   }))
+  vim.keymap.set("n", "<Esc>", function()
+    if preview then
+      close_preview()
+    end
+  end, vim.tbl_extend("force", opts, { desc = "Close image zoom" }))
 end
 
 function M.load()
@@ -176,6 +218,7 @@ function M.load()
   require("render-markdown").setup({
     preset = "obsidian",
     file_types = { "markdown" },
+    debounce = 150,
     latex = {
       enabled = true,
       render_modes = { "n", "c" },
@@ -237,8 +280,9 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function(args)
     M.load()
+    ensure_tmux_passthrough()
     M.setup_buffer_maps(args.buf)
-    require("snacks").image.doc.attach(args.buf)
+    -- snacks.image attaches via FileType (see patch_image_doc_attach in snacks.lua)
   end,
 })
 

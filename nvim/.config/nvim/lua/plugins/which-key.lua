@@ -17,7 +17,7 @@ require("which-key").setup({
     { "<leader>m", group = "Markdown" },
     { "<leader>mm", desc = "Toggle markdown render" },
     { "<leader>mp", desc = "Paste image" },
-    { "<leader>mh", desc = "Preview image/formula" },
+    { "<leader>mh", desc = "Zoom image/formula (toggle)" },
     { "<leader>mb", desc = "Backlinks" },
     { "<leader>mc", desc = "Toggle checkbox" },
     { "<leader>ml", desc = "Follow wiki link" },
