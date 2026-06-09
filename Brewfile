@@ -1,6 +1,7 @@
 tap "FelixKratz/formulae"
 tap "nikitabobko/tap"
 tap "anomalyco/tap"
+tap "laishulu/homebrew"
 
 brew "stow"
 brew "git"
@@ -21,6 +22,7 @@ brew "uv"
 brew "imagemagick"
 brew "ghostscript"
 brew "pngpaste"
+brew "macism"
 
 # cli utilities
 brew "neofetch"

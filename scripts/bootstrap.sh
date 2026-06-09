@@ -64,8 +64,9 @@ cat <<EOF
 Done.
 
 Next steps:
-  brew bundle --file=$DOTFILES_DIR/Brewfile   # installs fonts + apps
+  brew bundle --file=$DOTFILES_DIR/Brewfile   # installs fonts + apps (incl. macism for nvim IME)
   sketchybar --reload   # if sketchybar is installed
+  # Neovim IME: keep only ABC + one Chinese source in System Settings → Keyboard
   # Ghostty: Cmd+Q and reopen after font install if icons look wrong
 
 To restore your previous configs:
