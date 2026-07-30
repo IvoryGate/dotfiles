@@ -34,6 +34,7 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.inccommand = "split"
 
+vim.opt.hidden = true
 vim.opt.undofile = true
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300

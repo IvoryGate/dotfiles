@@ -1,3 +1,5 @@
 [user]
 	name = IvoryGate
 	email = j2737035695@gmail.com
+[http]
+	version = HTTP/2
