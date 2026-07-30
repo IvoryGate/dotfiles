@@ -1,6 +1,7 @@
 tap "FelixKratz/formulae"
 tap "nikitabobko/tap"
 tap "anomalyco/tap"
+tap "laishulu/homebrew"
 
 brew "stow"
 brew "git"
@@ -17,9 +18,11 @@ brew "sketchybar"
 brew "starship"
 brew "neovim"
 brew "tree-sitter-cli"
+brew "uv"
 brew "imagemagick"
 brew "ghostscript"
 brew "pngpaste"
+brew "macism"
 
 # cli utilities
 brew "neofetch"
@@ -28,8 +31,12 @@ brew "btop"
 brew "dooit"
 brew "anomalyco/tap/opencode"
 
-cask "ghostty"
+# fonts — JetBrainsMono Nerd Font (ghostty, alacritty, sketchybar, mpv, starship)
+#          sketchybar-app-font (sketchybar app icons)
+cask "font-jetbrains-mono-nerd-font"
 cask "font-sketchybar-app-font"
+
+cask "ghostty"
 cask "alacritty"
 cask "karabiner-elements"
 cask "nikitabobko/tap/aerospace"

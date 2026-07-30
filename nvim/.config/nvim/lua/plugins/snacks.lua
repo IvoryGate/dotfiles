@@ -57,6 +57,80 @@ local function lock_dashboard(buf)
   end
 end
 
+--- tmux: ioctl often reports the outer client geometry while nvim uses pane
+--- columns/lines — wrong cell_width makes kitty graphics oversized (corner crop).
+--- Prevent duplicate inline.new (double images) when attach races or after zoom restore.
+local function patch_image_inline_singleton()
+  local inline = require("snacks.image.inline")
+  if inline._dotfiles_singleton then
+    return
+  end
+  inline._dotfiles_singleton = true
+  local orig_new = inline.new
+  function inline.new(buf)
+    if vim.b[buf].snacks_image_inline then
+      return vim.b[buf].snacks_image_inline
+    end
+    local self = orig_new(buf)
+    vim.b[buf].snacks_image_inline = self
+    return self
+  end
+end
+
+--- Mutex around async terminal.detect before _attach (snacks default attach can race).
+local function patch_image_doc_attach()
+  local doc = require("snacks.image.doc")
+  if doc._dotfiles_attach then
+    return
+  end
+  doc._dotfiles_attach = true
+  local terminal = require("snacks.image.terminal")
+  function doc.attach(buf)
+    if require("snacks.image").config.enabled == false then
+      return
+    end
+    if not vim.api.nvim_buf_is_valid(buf) then
+      return
+    end
+    if vim.b[buf].snacks_image_attached or vim.b[buf].snacks_image_attaching then
+      return
+    end
+    vim.b[buf].snacks_image_attaching = true
+    terminal.detect(function()
+      vim.b[buf].snacks_image_attaching = nil
+      if vim.api.nvim_buf_is_valid(buf) and not vim.b[buf].snacks_image_attached then
+        doc._attach(buf)
+      end
+    end)
+  end
+end
+
+local function patch_image_terminal_for_tmux()
+  if not vim.env.TMUX or vim.fn.has("nvim-0.10") ~= 1 then
+    return
+  end
+  local terminal = require("snacks.image.terminal")
+  if terminal._dotfiles_tmux_size then
+    return
+  end
+  terminal._dotfiles_tmux_size = true
+  local orig_size = terminal.size
+  function terminal.size()
+    local s = orig_size()
+    local ok, px = pcall(vim.fn.getcellpixels)
+    if ok and type(px) == "table" and px[1] and px[1] > 0 then
+      s.cell_width = px[1]
+      s.cell_height = px[2] or s.cell_height
+      s.scale = math.max(1, px[1] / 8)
+    end
+    s.columns = vim.o.columns
+    s.rows = vim.o.lines
+    s.width = s.columns * s.cell_width
+    s.height = s.rows * s.cell_height
+    return s
+  end
+end
+
 local function setup_dashboard_lock()
   if dashboard_locked then
     return
@@ -136,6 +210,7 @@ local function setup()
         enabled = true,
         inline = true,
         float = true,
+        auto_resize = true,
         max_width = 80,
         max_height = 40,
       },
@@ -194,6 +269,9 @@ ${content}}
   })
 
   setup_dashboard_lock()
+  patch_image_terminal_for_tmux()
+  patch_image_doc_attach()
+  patch_image_inline_singleton()
 
   return snacks
 end
@@ -234,13 +312,69 @@ map("<leader>H", with_snacks(function(snacks)
   snacks.dashboard()
 end), "Home dashboard")
 
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("SnacksMarkdown", { clear = true }),
-  pattern = "markdown",
-  callback = function(ev)
-    require("snacks").image.doc.attach(ev.buf)
-  end,
-})
+map("<leader>fh", with_snacks(function(snacks)
+  snacks.picker.help({ layout = "dropdown" })
+end), "Help")
+
+map("<leader>fc", with_snacks(function(snacks)
+  snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+end), "Nvim config files")
+
+map("<leader>fs", with_snacks(function(snacks)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
+  for _, client in ipairs(clients) do
+    if client.server_capabilities.documentSymbolProvider then
+      snacks.picker.lsp_symbols({ layout = "dropdown", tree = true })
+      return
+    end
+  end
+  snacks.picker.treesitter()
+end), "Document symbols")
+
+map("<leader>fS", with_snacks(function(snacks)
+  snacks.picker.lsp_workspace_symbols()
+end), "Workspace symbols")
+
+map("grr", with_snacks(function(snacks)
+  snacks.picker.lsp_references({ include_declaration = false, include_current = true })
+end), "LSP references")
+
+map("<leader>fI", with_snacks(function(snacks)
+  snacks.picker.lsp_incoming_calls()
+end), "Incoming calls")
+
+map("<leader>fO", with_snacks(function(snacks)
+  snacks.picker.lsp_outgoing_calls({ tree = true })
+end), "Outgoing calls")
+
+map("<leader>fT", with_snacks(function(snacks)
+  snacks.picker.lsp_type_definitions()
+end), "Type definitions")
+
+map("<leader>fd", with_snacks(function(snacks)
+  snacks.picker.diagnostics_buffer()
+end), "Buffer diagnostics")
+
+map("<leader>fD", with_snacks(function(snacks)
+  snacks.picker.diagnostics()
+end), "Project diagnostics")
+
+map("<leader>fl", with_snacks(function(snacks)
+  snacks.picker.lines()
+end), "Lines in buffer")
+
+map("<leader>fj", with_snacks(function(snacks)
+  snacks.picker.jumps()
+end), "Jumps")
+
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.jump({ count = 1 })
+end, { desc = "Next diagnostic" })
+
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.jump({ count = -1 })
+end, { desc = "Previous diagnostic" })
 
 setup()
 
